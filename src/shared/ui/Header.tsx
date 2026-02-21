@@ -25,7 +25,9 @@ export const Header = ({ isLogined = false }: IProps) => {
                         <>
                             <Search width={60} className="cursor-pointer" onClick={() => navigate("/search")} />
                             <Bell width={60} />
-                            <Button size="medium">새 글 작성</Button>
+                            <Button size="medium" onClick={() => navigate("/write")}>
+                                새 글 작성
+                            </Button>
                             <Avatar />
                         </>
                     ) : (
