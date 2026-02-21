@@ -71,8 +71,15 @@ apiInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean }
+        const url = originalRequest.url || ""
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        // 로그인, 회원가입, 리프레시 요청에서는 자동 리프레시하지 않음
+        const isAuthUrl =
+            url.includes(API_PATH.AUTH.LOGIN) ||
+            url.includes(API_PATH.AUTH.SIGNUP) ||
+            url.includes(API_PATH.AUTH.REFRESH)
+
+        if (error.response?.status === 401 && !originalRequest._retry && !isAuthUrl) {
             if (originalRequest._retry) {
                 return Promise.reject(error)
             }

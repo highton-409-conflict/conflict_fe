@@ -17,7 +17,7 @@ export const useLoginMutation = createMutation(authApi.login, {
     successMessage: "로그인 성공",
     errorMessage: "로그인에 실패했습니다",
     errorMessages: {
-        401: "아이디 또는 비밀번호가 일치하지 않습니다",
+        401: "비밀번호가 일치하지 않습니다",
         404: "존재하지 않는 계정입니다",
     },
     onSuccessCallback: (data) => {
