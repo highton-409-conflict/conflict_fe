@@ -23,6 +23,9 @@ const MESSAGE_STYLE: Record<InputState, string> = {
     success: "text-green-600",
 }
 
+/**
+ * @description 인풋 컴포넌트
+ */
 export const Input = ({
     label,
     type = "text",

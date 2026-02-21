@@ -1,36 +1,29 @@
 import { LoginPage, SignupPage } from "@/pages"
-import { AuthGuard, RootRedirect } from "@/shared/lib"
+import { AuthGuard } from "@/shared/lib"
 import { createBrowserRouter } from "react-router"
+import { AppLayout } from "@/shared/layout/AppLayout"
 
-export const router = createBrowserRouter(
-    [
-        {
-            path: "/",
-            element: <RootRedirect />,
-        },
-        {
-            children: [
-                {
-                    path: "/login",
-                    element: <LoginPage />,
-                },
-                {
-                    path: "/signup",
-                    element: <SignupPage />,
-                },
-                {
-                    element: <AuthGuard />,
-                    children: [
-                        {
-                            path: "/home",
-                            // element: <HomePage />,
-                        },
-                    ],
-                },
-            ],
-        },
-    ],
+export const router = createBrowserRouter([
     {
-        basename: "/",
-    }
-)
+        element: <AppLayout />,
+        children: [
+            {
+                path: "/login",
+                element: <LoginPage />,
+            },
+            {
+                path: "/signup",
+                element: <SignupPage />,
+            },
+            {
+                element: <AuthGuard />,
+                children: [
+                    {
+                        path: "/",
+                        // element: <HomePage />,
+                    },
+                ],
+            },
+        ],
+    },
+])

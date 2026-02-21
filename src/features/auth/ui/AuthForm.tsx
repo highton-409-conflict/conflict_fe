@@ -13,7 +13,7 @@ export const AuthForm = ({ type }: IAuthProp) => {
     const navigate = useNavigate()
 
     return (
-        <form className="w-full h-full flex flex-col gap-12 max-w-90 md:max-w-120 xl:max-w-150 max-h-150">
+        <form className="w-full min-w-160 h-full flex flex-col gap-12 max-w-90 md:max-w-120 xl:max-w-150 max-h-150">
             <div>
                 <h1 className="text-cyan-500 text-title-medium md:text-title-large">
                     {type == "login" ? "로그인" : "회원가입"}

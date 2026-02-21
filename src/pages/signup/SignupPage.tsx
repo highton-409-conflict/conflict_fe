@@ -5,7 +5,7 @@ import { AuthForm } from "@/features/auth"
  */
 export const SignupPage = () => {
     return (
-        <div className="h-screen flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center">
             <AuthForm type="signup" />
         </div>
     )
