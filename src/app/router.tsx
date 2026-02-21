@@ -1,4 +1,4 @@
-import { LoginPage, SignupPage, FeedPage, SearchPage } from "@/pages"
+import { LoginPage, SignupPage, FeedPage, SearchPage, WritePage } from "@/pages"
 // import { AuthGuard } from "@/shared/lib"
 import { createBrowserRouter } from "react-router"
 import { AppLayout } from "@/shared/layout/AppLayout"
@@ -17,6 +17,10 @@ export const router = createBrowserRouter([
         children: [
             { path: "/", element: <FeedPage /> },
             { path: "/search", element: <SearchPage /> },
+            {
+                // element: <AuthGuard />,
+                children: [{ path: "/write", element: <WritePage /> }],
+            },
         ],
     },
 ])
