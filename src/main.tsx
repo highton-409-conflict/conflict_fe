@@ -1,7 +1,7 @@
 import { createRoot } from "react-dom/client"
-import { Providers } from "@/app/providers"
+import { Providers } from "@/app/Providers"
 import { router } from "@/app/router"
-import { queryClient } from "@/shared/query/query-client"
+import { queryClient } from "@/shared/query"
 
 import "./global.css"
 

@@ -1,7 +1,5 @@
-import LoginPage from "@/pages/login/LoginPage"
-import SignupPage from "@/pages/signup/SignupPage"
-import AuthGuard from "@/shared/lib/AuthGuard"
-import RootRedirect from "@/shared/lib/RootRedirect"
+import { LoginPage, SignupPage } from "@/pages"
+import { AuthGuard, RootRedirect } from "@/shared/lib"
 import { createBrowserRouter } from "react-router"
 
 export const router = createBrowserRouter(

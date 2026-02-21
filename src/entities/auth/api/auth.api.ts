@@ -5,9 +5,9 @@ import type {
     IRefreshResponse,
     ISignupRequest,
 } from "@/entities/auth/api/auth.api.type"
-import { ApiHelper } from "@/shared/api/api.base"
-import { API_PATH } from "@/shared/api/api.path"
-import type { ApiResponse } from "@/shared/model/api.type"
+import { ApiHelper } from "@/shared/api"
+import { API_PATH } from "@/shared/api"
+import type { ApiResponse } from "@/shared/model"
 
 /** 인증 API */
 export const authApi = {

@@ -1,5 +1,5 @@
-import { Input } from "@/shared/ui/Input"
-import { Button } from "@/shared/ui/Button"
+import { Input } from "@/shared/ui"
+import { Button } from "@/shared/ui"
 import { useNavigate } from "react-router"
 
 interface IAuthProp {
@@ -9,7 +9,7 @@ interface IAuthProp {
 /**
  * @description 로그인/회원가입 폼 컴포넌트
  */
-const AuthForm = ({ type }: IAuthProp) => {
+export const AuthForm = ({ type }: IAuthProp) => {
     const navigate = useNavigate()
 
     return (
@@ -45,5 +45,3 @@ const AuthForm = ({ type }: IAuthProp) => {
         </form>
     )
 }
-
-export default AuthForm
