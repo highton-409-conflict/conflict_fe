@@ -98,7 +98,7 @@ export function Timeline({ items, editMode = false, onDelete }: TimelineProps) {
                     const width = ((diffInMonths(item.start, item.end) + 1) / totalMonths) * 100
                     const top = (laneCount - 1 - item.lane) * LANE_HEIGHT
 
-                    const isNarrow = width < 6 // 좁은 기준 (필요하면 5~8 사이로 조절)
+                    const isNarrow = width < 6
 
                     return (
                         <div
@@ -116,10 +116,8 @@ export function Timeline({ items, editMode = false, onDelete }: TimelineProps) {
                     ${editMode ? "justify-between" : "justify-start"}
                 `}
                             >
-                                {/* label */}
                                 {(!editMode || !isNarrow) && <span className="truncate">{item.label}</span>}
 
-                                {/* X 버튼 */}
                                 {editMode && (
                                     <button
                                         onClick={() => onDelete?.(item.id)}
