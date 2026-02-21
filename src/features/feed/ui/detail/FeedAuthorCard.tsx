@@ -1,6 +1,9 @@
 import { Button } from "@/shared/ui"
+import { useNavigate } from "react-router"
 
 export const FeedAuthorCard = () => {
+    const navigate = useNavigate()
+
     return (
         <div className="rounded-xl p-6 bg-white">
             <div className="flex items-center justify-between mb-4">
@@ -13,7 +16,9 @@ export const FeedAuthorCard = () => {
                     </div>
                 </div>
 
-                <div className="text-sm text-neutral-500">팔로워 144&nbsp;&nbsp;팔로잉 144</div>
+                <div onClick={() => navigate("/follow")} className="text-sm text-neutral-500">
+                    팔로워 144&nbsp;&nbsp;팔로잉 144
+                </div>
             </div>
 
             <p className="text-sm text-neutral-600 mb-4">안녕하세요. 안녕하세요. 안녕하세요.</p>

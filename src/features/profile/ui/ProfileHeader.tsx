@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router"
+
 type ProfileHeaderProps = {
     username: string
     handle: string
@@ -13,6 +15,8 @@ export const ProfileHeader = ({
     followingCount,
     profileImageUrl,
 }: ProfileHeaderProps) => {
+    const navigate = useNavigate()
+
     return (
         <section className="flex items-center justify-between">
             <div className="flex items-center gap-6">
@@ -29,12 +33,12 @@ export const ProfileHeader = ({
             </div>
 
             <div className="flex gap-10 text-neutral-600">
-                <div className="flex flex-col items-center">
+                <div onClick={() => navigate("/follow")} className="flex flex-col items-center">
                     <span className="text-sm">팔로워</span>
                     <span className="text-title-small">{followerCount}</span>
                 </div>
 
-                <div className="flex flex-col items-center">
+                <div onClick={() => navigate("/follow")} className="flex flex-col items-center">
                     <span className="text-sm">팔로잉</span>
                     <span className="text-title-small">{followingCount}</span>
                 </div>
