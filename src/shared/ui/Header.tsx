@@ -1,6 +1,6 @@
 import Logo from "@/assets/images/Logo.svg"
 import { useNavigate } from "react-router"
-import { Search } from "lucide-react"
+import { Bell, Search } from "lucide-react"
 import { Avatar, Button } from "."
 
 interface IProps {
@@ -20,15 +20,21 @@ export const Header = ({ isLogined = false }: IProps) => {
                     <img src={Logo} width={80} alt="덕을 쌓다 로고" />
                 </div>
 
-                <div className="flex justify-center items-center gap-6 text-neutral-500">
-                    <Search width={60} />
-
-                    {isLogined ? (
-                        <Avatar />
+                <div className="flex justify-center items-center gap-4 text-neutral-500">
+                    {!isLogined ? (
+                        <>
+                            <Search width={60} className="cursor-pointer" onClick={() => navigate("/search")} />
+                            <Bell width={60} />
+                            <Button size="medium">새 글 작성</Button>
+                            <Avatar />
+                        </>
                     ) : (
-                        <Button size="medium" fullWidth={false} variant="white" onClick={() => navigate("/login")}>
-                            로그인
-                        </Button>
+                        <>
+                            <Search width={60} className="cursor-pointer" onClick={() => navigate("/search")} />
+                            <Button size="medium" fullWidth={false} variant="white" onClick={() => navigate("/login")}>
+                                로그인
+                            </Button>
+                        </>
                     )}
                 </div>
             </div>
