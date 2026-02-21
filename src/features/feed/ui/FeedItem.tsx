@@ -33,7 +33,7 @@ export const FeedItem = ({ image, title, content, date, user, likes }: IProps) =
                 box-border p-2
             "
         >
-            <div className="w-65 h-45 rounded-2xl aspect-square bg-gray-300">
+            <div className="w-65 h-45 rounded-2xl aspect-square bg-neutral-300">
                 <img src={image} alt={title} className="w-full h-full object-cover rounded-2xl" />
             </div>
 
@@ -42,11 +42,11 @@ export const FeedItem = ({ image, title, content, date, user, likes }: IProps) =
                     {title}
                 </h4>
 
-                <p title={content} className="text-gray-500 text-body-small line-clamp-2">
+                <p title={content} className="text-neutral-500 text-body-small line-clamp-2">
                     {content}
                 </p>
 
-                <p className="text-gray-400 text-sm">{date}</p>
+                <p className="text-neutral-400 text-sm">{date}</p>
 
                 <div className="flex items-center justify-between pt-2">
                     <div className="flex items-center gap-3">
@@ -54,7 +54,7 @@ export const FeedItem = ({ image, title, content, date, user, likes }: IProps) =
                         <p className="text-label-medium text-black">{user.username}</p>
                     </div>
 
-                    <div className="flex items-center gap-2 text-gray-500">
+                    <div className="flex items-center gap-2 text-neutral-500">
                         <span>{likes}</span>
                         <Heart size={20} />
                     </div>

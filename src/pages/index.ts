@@ -1,2 +1,5 @@
 export { LoginPage } from "./login/LoginPage"
 export { SignupPage } from "./signup/SignupPage"
+export { FeedPage } from "./feed/FeedPage"
+export { SearchPage } from "./search/SearchPage"
+export { WritePage } from "./write/WritePage"

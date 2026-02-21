@@ -34,7 +34,7 @@ export const Button = memo(function Button({
                 size === "large" && "h-14 px-4 text-label-large",
                 size === "medium" && "h-8 px-3 text-label-medium",
 
-                variant === "primary" && "bg-cyan-600 text-white hover:bg-cyan-700 focus-visible:outline-cyan-600",
+                variant === "primary" && "bg-cyan-500 text-white hover:bg-cyan-600 focus-visible:outline-cyan-600",
 
                 variant === "error" && "bg-red-200 text-red-500 hover:bg-red-300 focus-visible:outline-red-400",
 

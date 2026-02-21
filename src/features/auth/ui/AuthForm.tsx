@@ -94,15 +94,14 @@ export const AuthForm = ({ type }: IAuthProp) => {
 
                 {type === "signup" && (
                     <Input
-                        label="이름"
+                        label="닉네임"
                         name="name"
-                        placeholder="이름을 입력해주세요."
+                        placeholder="닉네임을 입력해주세요."
                         value={form.name}
                         onChange={handleChange}
                         disabled={isSubmitting}
                     />
                 )}
-
                 <div className="flex flex-col gap-2">
                     <Button type="submit" className="mt-4" disabled={isSubmitting || !isValid}>
                         {isSubmitting ? "처리 중..." : type == "login" ? "로그인" : "회원가입"}
