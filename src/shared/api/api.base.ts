@@ -143,12 +143,13 @@ export const ApiHelper = {
      * DELETE 요청
      * @template T - 응답 데이터의 타입
      * @param {string} url - 요청할 URL 경로
+     * @param {unknown} [data] - 요청 본문에 포함할 데이터
      * @param {import('axios').AxiosRequestConfig} [config] - Axios 요청 설정 옵션
      * @returns {Promise<T>} 응답 데이터를 반환하는 Promise
      * @throws {Error} 네트워크 오류 또는 HTTP 오류 발생 시 예외 처리
      */
-    delete: async <T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T> => {
-        const response: AxiosResponse<T> = await apiInstance.delete(url, config)
+    delete: async <T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> => {
+        const response: AxiosResponse<T> = await apiInstance.delete(url, { data, ...config })
         return response.data
     },
 

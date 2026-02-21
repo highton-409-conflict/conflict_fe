@@ -23,5 +23,7 @@ export const authApi = {
     /**
      * @description 토큰 재발급 API
      */
-    refresh: ApiFactory.post<void, ILoginResponse>(API_PATH.AUTH.REFRESH)
+    refresh: ApiFactory.post<void, ILoginResponse>(API_PATH.AUTH.REFRESH),
+
+    delete: ApiFactory.delete<void>(API_PATH.AUTH.WITHDRAW)
 }

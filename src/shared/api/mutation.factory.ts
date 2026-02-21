@@ -44,22 +44,46 @@ const getErrorMessage = (
 }
 
 /**
+ * @description 뮤테이션 함수 또는 뮤테이션 함수 팩토리 타입
+ */
+export type MutationFn<T = unknown, R = unknown> =
+    | ((params: T) => Promise<R>)
+    | ((param: T) => (body?: unknown) => Promise<R>)
+
+/**
+ * @description 뮤테이션 함수를 정규화하는 함수
+ * @param mutationFn - 뮤테이션 함수 또는 팩토리
+ * @returns 정규화된 뮤테이션 함수
+ */
+const normalizeMutationFn = <T = unknown, R = unknown>(
+    mutationFn: MutationFn<T, R>
+): ((params: T) => Promise<R>) => {
+    return (params: T) => {
+        const result = (mutationFn as (param: T) => unknown)(params)
+        if (typeof result === "function") {
+            return (result as () => Promise<R>)()
+        }
+        return result as Promise<R>
+    }
+}
+
+/**
  * @description 표준 뮤테이션 훅 생성 팩토리
  * @template T - 뮤테이션 함수 파라미터 타입
  * @template R - 뮤테이션 결과 타입
- * @param {(params: T) => Promise<R>} mutationFn - 뮤테이션 함수
+ * @param {(params: T) => Promise<R> | ((params: T) => (body?: unknown) => Promise<R>)} mutationFn - 뮤테이션 함수 또는 팩토리
  * @param {MutationOptions<R>} options - 뮤테이션 옵션
  * @returns 표준 뮤테이션 훅 생성 함수
  */
 export const createMutation = <T = unknown, R = unknown>(
-    mutationFn: (params: T) => Promise<R>,
+    mutationFn: MutationFn<T, R>,
     options: MutationOptions<R> = {}
 ) => {
     return () => {
         const { successMessage, errorMessage, errorMessages, onSuccessCallback, onErrorCallback } = options
 
-        return useMutation({
-            mutationFn,
+        return useMutation<R, Error, T>({
+            mutationFn: normalizeMutationFn(mutationFn),
             onSuccess: (data) => {
                 if (successMessage) {
                     toast.success(successMessage)
@@ -80,18 +104,18 @@ export const createMutation = <T = unknown, R = unknown>(
  * @description 뮤테이션 훅 생성 팩토리 (옵션 커스텀용)
  * @template T - 뮤테이션 함수 파라미터 타입
  * @template R - 뮤테이션 결과 타입
- * @param {(params: T) => Promise<R>} mutationFn - 뮤테이션 함수
+ * @param {(params: T) => Promise<R> | ((params: T) => (body?: unknown) => Promise<R>)} mutationFn - 뮤테이션 함수 또는 팩토리
  * @param {MutationOptions<R>} options - 뮤테이션 옵션
  * @returns UseMutationOptions 를 반환하는 함수
  */
 export const createMutationOptions = <T = unknown, R = unknown>(
-    mutationFn: (params: T) => Promise<R>,
+    mutationFn: MutationFn<T, R>,
     options: MutationOptions<R> = {}
 ): UseMutationOptions<R, Error, T> => {
     const { successMessage, errorMessage, errorMessages, onSuccessCallback, onErrorCallback } = options
 
     return {
-        mutationFn,
+        mutationFn: normalizeMutationFn(mutationFn),
         onSuccess: (data) => {
             if (successMessage) {
                 toast.success(successMessage)

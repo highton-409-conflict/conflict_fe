@@ -24,3 +24,9 @@ export const useLoginMutation = createMutation(authApi.login, {
         authStorage.setTokens(data.access_token, data.refresh_token)
     },
 })
+
+/** 회원 탈퇴 뮤테이션 */
+export const useDeleteMutation = createMutation(authApi.delete, {
+    successMessage: "계정 삭제 성공",
+    errorMessage: "계정 삭제에 실패했습니다"
+})
