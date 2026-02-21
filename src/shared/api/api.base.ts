@@ -1,5 +1,7 @@
 import axios from "axios"
 import type { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios"
+import { API_PATH } from "./api.path"
+import { authStorage } from "@/entities/auth/api/auth.storage"
 
 const apiInstance = axios.create({
     baseURL: `${import.meta.env.VITE_API_BASE_URL}`,
@@ -10,12 +12,50 @@ const apiInstance = axios.create({
 })
 
 /**
- * @description 요청 시 Authorization 헤더에 accessToken 자동 주입
+ * @description 현재 리프레시 요청의 Promise 를 저장하는 변수
+ */
+let refreshPromise: Promise<string> | null = null
+
+/**
+ * @description 토큰 재발급 요청을 처리하는 함수
+ * @returns {Promise<string>} 새로운 access token
+ */
+const handleRefreshToken = async (): Promise<string> => {
+    const refreshToken = authStorage.getRefreshToken()
+
+    if (!refreshToken) {
+        throw new Error("No refresh token available")
+    }
+
+    const response = await axios.post<{ access_token: string; refresh_token: string }>(
+        `${import.meta.env.VITE_API_BASE_URL}${API_PATH.AUTH.REFRESH}`,
+        {},
+        {
+            headers: {
+                "X-Refresh-Token": refreshToken,
+            },
+        }
+    )
+
+    const { access_token, refresh_token } = response.data
+
+    authStorage.setTokens(access_token, refresh_token)
+
+    return access_token
+}
+
+/**
+ * @description Request 인터셉터
+ * @param config - Axios 요청 설정 옵션
+ * @returns {Promise<InternalAxiosRequestConfig>} 인터셉터 처리 후 요청 설정 옵션
  */
 apiInstance.interceptors.request.use((config) => {
-    const accessToken = localStorage.getItem("accessToken")
+    const accessToken = authStorage.getAccessToken()
 
-    if (accessToken && !config.url?.includes("/auth/login") && !config.url?.includes("/auth/refresh")) {
+    if (accessToken &&
+        !config.url?.includes(API_PATH.AUTH.REFRESH) &&
+        !config.url?.includes(API_PATH.AUTH.LOGIN) &&
+        !config.url?.includes(API_PATH.AUTH.SIGNUP)) {
         config.headers.Authorization = `Bearer ${accessToken}`
     }
 
@@ -23,25 +63,47 @@ apiInstance.interceptors.request.use((config) => {
 })
 
 /**
- * @param config - Axios 요청 설정 옵션
- * @description Request 인터셉터
- * @returns {Promise<InternalAxiosRequestConfig>} 인터셉터 처리 후 요청 설정 옵션
- */
-apiInstance.interceptors.request.use(
-    (config: InternalAxiosRequestConfig) => {
-        return config
-    },
-    (error) => {
-        return Promise.reject(error)
-    }
-)
-/**
+ * @description Response 인터셉터 - 401 에러 시 토큰 자동 갱신
  * @param response - Axios 응답
- * @description Response 인터셉터
+ * @returns {Promise<AxiosResponse>} 인터셉터 처리 후 응답
  */
 apiInstance.interceptors.response.use(
     (response) => response,
-    (error) => {
+    async (error) => {
+        const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean }
+        const url = originalRequest.url || ""
+
+        // 로그인, 회원가입, 리프레시 요청에서는 자동 리프레시하지 않음
+        const isAuthUrl =
+            url.includes(API_PATH.AUTH.LOGIN) ||
+            url.includes(API_PATH.AUTH.SIGNUP) ||
+            url.includes(API_PATH.AUTH.REFRESH)
+
+        if (error.response?.status === 401 && !originalRequest._retry && !isAuthUrl) {
+            if (originalRequest._retry) {
+                return Promise.reject(error)
+            }
+
+            originalRequest._retry = true
+
+            try {
+                if (!refreshPromise) {
+                    refreshPromise = handleRefreshToken()
+                }
+
+                const newAccessToken = await refreshPromise
+
+                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
+                return apiInstance(originalRequest)
+            } catch (refreshError) {
+                authStorage.clearTokens()
+                window.location.href = "/login"
+                return Promise.reject(refreshError)
+            } finally {
+                refreshPromise = null
+            }
+        }
+
         return Promise.reject(error)
     }
 )
