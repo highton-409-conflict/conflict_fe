@@ -1,6 +1,6 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+@plugin "@tailwindcss/typography";
 
 /**
  * 프로젝트 기본 스타일 초기화
