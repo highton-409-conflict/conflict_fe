@@ -1,8 +1,6 @@
 import type {
     ILoginRequest,
     ILoginResponse,
-    IRefreshRequest,
-    IRefreshResponse,
     ISignupRequest,
 } from "@/entities/auth/api/auth.api.type"
 import { ApiFactory } from "@/shared/api"
@@ -23,13 +21,7 @@ export const authApi = {
     login: ApiFactory.post<ILoginRequest, ILoginResponse>(API_PATH.AUTH.LOGIN),
 
     /**
-     * @description 로그아웃 API
-     */
-    logout: ApiFactory.post<void, void>(API_PATH.AUTH.LOGOUT),
-
-    /**
      * @description 토큰 재발급 API
-     * @param {IRefreshRequest} body - 토큰 재발급 요청 바디
      */
-    refresh: ApiFactory.post<IRefreshRequest, IRefreshResponse>(API_PATH.AUTH.REFRESH),
+    refresh: ApiFactory.post<void, ILoginResponse>(API_PATH.AUTH.REFRESH)
 }

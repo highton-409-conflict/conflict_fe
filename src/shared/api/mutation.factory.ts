@@ -1,19 +1,46 @@
 import type { UseMutationOptions } from "@tanstack/react-query"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "react-toastify"
+import type { AxiosError } from "axios"
 
 /**
- * @description 뮤테이션 옵션 타입
+ * @description 표준 뮤테이션 옵션 타입
  */
-export interface MutationOptions {
+export interface MutationOptions<T = unknown> {
     /** 성공 시 토스트 메시지 */
     successMessage?: string
-    /** 실패 시 토스트 메시지 */
+    /** 실패 시 토스트 메시지 (기본값) */
     errorMessage?: string
+    /** HTTP 상태 코드별 실패 메시지 */
+    errorMessages?: Record<number, string>
     /** 성공 시 추가 콜백 */
-    onSuccessCallback?: () => void
+    onSuccessCallback?: (data: T) => void
     /** 실패 시 추가 콜백 */
     onErrorCallback?: (error: unknown) => void
+}
+
+/**
+ * @description 에러에 따른 토스트 메시지를 반환하는 함수
+ * @param error - 에러 객체
+ * @param errorMessages - HTTP 상태 코드별 에러 메시지
+ * @param defaultErrorMessage - 기본 에러 메시지
+ * @returns {string} 토스트 메시지
+ */
+const getErrorMessage = (
+    error: unknown,
+    errorMessages?: Record<number, string>,
+    defaultErrorMessage?: string
+): string => {
+    const status = (error as AxiosError).response?.status
+
+    if (status) {
+        if (status === 500) {
+            return "서버 오류가 발생했습니다"
+        }
+        return errorMessages?.[status] ?? defaultErrorMessage ?? `오류가 발생했습니다 (${status})`
+    }
+
+    return defaultErrorMessage ?? "오류가 발생했습니다"
 }
 
 /**
@@ -21,15 +48,15 @@ export interface MutationOptions {
  * @template T - 뮤테이션 함수 파라미터 타입
  * @template R - 뮤테이션 결과 타입
  * @param {(params: T) => Promise<R>} mutationFn - 뮤테이션 함수
- * @param {MutationOptions} options - 뮤테이션 옵션
+ * @param {MutationOptions<R>} options - 뮤테이션 옵션
  * @returns 표준 뮤테이션 훅 생성 함수
  */
 export const createMutation = <T = unknown, R = unknown>(
     mutationFn: (params: T) => Promise<R>,
-    options: MutationOptions = {}
+    options: MutationOptions<R> = {}
 ) => {
     return () => {
-        const { successMessage, errorMessage, onSuccessCallback, onErrorCallback } = options
+        const { successMessage, errorMessage, errorMessages, onSuccessCallback, onErrorCallback } = options
 
         return useMutation({
             mutationFn,
@@ -37,13 +64,12 @@ export const createMutation = <T = unknown, R = unknown>(
                 if (successMessage) {
                     toast.success(successMessage)
                 }
-                onSuccessCallback?.()
+                onSuccessCallback?.(data)
                 return data
             },
             onError: (error) => {
-                if (errorMessage) {
-                    toast.error(errorMessage)
-                }
+                const message = getErrorMessage(error, errorMessages, errorMessage)
+                toast.error(message)
                 onErrorCallback?.(error)
             },
         })
@@ -55,14 +81,14 @@ export const createMutation = <T = unknown, R = unknown>(
  * @template T - 뮤테이션 함수 파라미터 타입
  * @template R - 뮤테이션 결과 타입
  * @param {(params: T) => Promise<R>} mutationFn - 뮤테이션 함수
- * @param {MutationOptions} options - 뮤테이션 옵션
+ * @param {MutationOptions<R>} options - 뮤테이션 옵션
  * @returns UseMutationOptions 를 반환하는 함수
  */
 export const createMutationOptions = <T = unknown, R = unknown>(
     mutationFn: (params: T) => Promise<R>,
-    options: MutationOptions = {}
+    options: MutationOptions<R> = {}
 ): UseMutationOptions<R, Error, T> => {
-    const { successMessage, errorMessage, onSuccessCallback, onErrorCallback } = options
+    const { successMessage, errorMessage, errorMessages, onSuccessCallback, onErrorCallback } = options
 
     return {
         mutationFn,
@@ -70,13 +96,12 @@ export const createMutationOptions = <T = unknown, R = unknown>(
             if (successMessage) {
                 toast.success(successMessage)
             }
-            onSuccessCallback?.()
+            onSuccessCallback?.(data)
             return data
         },
         onError: (error) => {
-            if (errorMessage) {
-                toast.error(errorMessage)
-            }
+            const message = getErrorMessage(error, errorMessages, errorMessage)
+            toast.error(message)
             onErrorCallback?.(error)
         },
     }
