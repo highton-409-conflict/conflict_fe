@@ -1,5 +1,15 @@
 import { AuthGuard } from "@/shared/lib"
-import { LoginPage, SignupPage, FeedPage, SearchPage, WritePage, MyPage, ProfilePage, FeedDetailPage } from "@/pages"
+import {
+    LoginPage,
+    SignupPage,
+    FeedPage,
+    SearchPage,
+    WritePage,
+    MyPage,
+    ProfilePage,
+    FeedDetailPage,
+    FollowPage,
+} from "@/pages"
 import { createBrowserRouter } from "react-router"
 import { AppLayout } from "@/shared/layout/AppLayout"
 import { AuthLayout } from "@/shared/layout/AuthLayout"
@@ -24,6 +34,7 @@ export const router = createBrowserRouter([
                     { path: "/write", element: <WritePage /> },
                     { path: "/mypage", element: <MyPage /> },
                     { path: "/profile", element: <ProfilePage /> },
+                    { path: "/follow", element: <FollowPage /> },
                 ],
             },
         ],
