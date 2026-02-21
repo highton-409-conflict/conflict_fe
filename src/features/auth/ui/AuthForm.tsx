@@ -22,12 +22,7 @@ const AuthForm = ({ type }: IAuthProp) => {
             </div>
 
             <div className="flex flex-col gap-7">
-                <Input
-                    label="아이디"
-                    placeholder="아이디를 입력해주세요."
-                    state="error"
-                    message="아이디를 입력하세요"
-                />
+                <Input label="아이디" placeholder="아이디를 입력해주세요." />
                 <Input label="비밀번호" placeholder="비밀번호를 입력해주세요." type="password" />
 
                 <div className="flex flex-col gap-2">
@@ -42,7 +37,7 @@ const AuthForm = ({ type }: IAuthProp) => {
                             onClick={() => navigate(type === "login" ? "/signup" : "/login")}
                             className="cursor-pointer select-none text-cyan-500 text-label-medium"
                         >
-                            {type == "login" ? "회원가입하기" : "로그인하기"}
+                            {type == "login" ? "회원가입" : "로그인"}
                         </span>
                     </div>
                 </div>
