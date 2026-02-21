@@ -15,10 +15,10 @@ const AuthForm = ({ type }: IAuthProp) => {
     return (
         <form className="w-full h-full flex flex-col gap-12 max-w-90 md:max-w-120 xl:max-w-150 max-h-150">
             <div>
-                <h1 className="text-blue-500 text-title-medium md:text-title-large">
+                <h1 className="text-cyan-500 text-title-medium md:text-title-large">
                     {type == "login" ? "로그인" : "회원가입"}
                 </h1>
-                <h5 className="text-gray-400 text-body-medium md:text-body-large">저희 서비스에 오신걸 환영해요!</h5>
+                <h5 className="text-neutral-400 text-body-medium md:text-body-large">저희 서비스에 오신걸 환영해요!</h5>
             </div>
 
             <div className="flex flex-col gap-7">
@@ -30,12 +30,12 @@ const AuthForm = ({ type }: IAuthProp) => {
                         {type == "login" ? "로그인" : "회원가입"}
                     </Button>
                     <div className="w-full flex justify-center items-center gap-2">
-                        <p className="text-gray-400">
+                        <p className="text-neutral-400">
                             {type == "login" ? "아직 회원이 아니신가요?" : "이미 회원이신가요?"}
                         </p>
                         <span
                             onClick={() => navigate(type === "login" ? "/signup" : "/login")}
-                            className="cursor-pointer select-none text-blue-500 text-label-medium"
+                            className="cursor-pointer select-none text-cyan-500 text-label-medium"
                         >
                             {type == "login" ? "회원가입하기" : "로그인하기"}
                         </span>

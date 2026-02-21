@@ -12,14 +12,14 @@ type Props = ComponentProps<"input"> & {
 }
 
 const STATE_STYLE: Record<InputState, string> = {
-    default: "border-gray-300 focus-within:border-blue-600",
-    error: "border-red-500 focus-within:border-red-500",
+    default: "border-neutral-300 focus-within:border-cyan-600",
+    error: "border-rose-500 focus-within:border-rose-500",
     success: "border-green-500 focus-within:border-green-500",
 }
 
 const MESSAGE_STYLE: Record<InputState, string> = {
-    default: "text-gray-400",
-    error: "text-red-500",
+    default: "text-neutral-400",
+    error: "text-rose-500",
     success: "text-green-600",
 }
 
@@ -41,7 +41,7 @@ export const Input = ({
     return (
         <div className="flex w-full flex-col gap-2">
             {label && (
-                <label htmlFor={id} className="cursor-text text-label-large text-gray-800">
+                <label htmlFor={id} className="cursor-text text-label-large text-neutral-800">
                     {label}
                 </label>
             )}
@@ -58,8 +58,8 @@ export const Input = ({
                         className={clsx(
                             "w-full resize-none bg-transparent",
                             "text-base leading-6",
-                            "text-gray-900",
-                            "placeholder:text-gray-400",
+                            "text-neutral-900",
+                            "placeholder:text-neutral-400",
                             "focus-visible:outline-none",
                             "h-100",
                             className
@@ -74,8 +74,8 @@ export const Input = ({
                             className={clsx(
                                 "w-full bg-transparent",
                                 "text-base leading-6",
-                                "text-gray-900",
-                                "placeholder:text-gray-400",
+                                "text-neutral-900",
+                                "placeholder:text-neutral-400",
                                 "focus-visible:outline-none",
                                 className
                             )}
@@ -86,7 +86,7 @@ export const Input = ({
                             <button
                                 type="button"
                                 onClick={() => setShowPassword((prev) => !prev)}
-                                className="ml-2 text-gray-500"
+                                className="ml-2 text-neutral-500"
                                 tabIndex={-1}
                             >
                                 {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}

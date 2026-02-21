@@ -106,43 +106,6 @@
 }
 
 @theme {
-    /* ===== Primary ===== */
-    --primary-blue: #001871;
-    --primary-blue-pale: #e1ecff;
-    --primary-blue-gray: #808bb8;
-    --primary-blue-shadow: #99a3c6;
-    --primary-blue-light: #33468d;
-    --primary-blue-dark: #001256;
-
-    /* ===== Secondary ===== */
-    --secondary-sky: #b8e8fe;
-    --secondary-sky-pale: #d4f1fe;
-    --secondary-sky-light: #bfeafe;
-    --secondary-sky-dark: #94dbfb;
-
-    /* ===== Accent ===== */
-    --accent-purple: #d7c1f2;
-
-    /* ===== Point ===== */
-    --point-yellow: #fff59d;
-
-    /* ===== Background ===== */
-    --background-white: #fefefe;
-
-    /* ===== Grayscale ===== */
-    --grayscale-black: #222222;
-    --grayscale-dark-gray: #666666;
-    --grayscale-medium-gray: #999999;
-    --grayscale-light-gray: #cccccc;
-    --grayscale-border: #dedede;
-    --grayscale-bg-gray: #f3f3f3;
-
-    /* ===== System ===== */
-    --system-error: #f94848;
-    --system-warning: #ffbf2b;
-    --system-success: #4caf50;
-    --system-info: #0091ea;
-
     /* ===== Label ===== */
     --text-label-small: 14px;
     --text-label-small--line-height: 20px;

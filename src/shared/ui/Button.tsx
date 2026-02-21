@@ -21,11 +21,11 @@ export const Button = memo(function Button({
             className={clsx(
                 "inline-flex items-center justify-center",
                 "h-14 px-4 py-2 rounded-lg",
-                "bg-blue-600 text-white",
+                "bg-cyan-600 text-white",
                 "text-label-large",
-                "hover:bg-blue-700",
+                "hover:bg-cyan-700",
                 "focus-visible:outline focus-visible:outline-offset-2",
-                "focus-visible:outline-blue-600",
+                "focus-visible:outline-cyan-600",
                 "disabled:opacity-50 disabled:cursor-not-allowed",
                 fullWidth ? "w-full" : "w-fit",
                 className
