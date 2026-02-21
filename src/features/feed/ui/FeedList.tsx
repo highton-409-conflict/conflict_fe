@@ -17,15 +17,16 @@ interface Feed {
 
 interface IProps {
     feeds: Feed[]
+    cols?: number
 }
 
 /**
  * @description 피드 리스트 컴포넌트
  */
-export const FeedList = ({ feeds }: IProps) => {
+export const FeedList = ({ feeds, cols = 4 }: IProps) => {
     return (
         <div className="w-full flex justify-center">
-            <div className="w-300 px-4 grid grid-cols-4 gap-8">
+            <div className={`w-300 px-4 grid grid-cols-${cols} gap-8`}>
                 {feeds.map((feed) => (
                     <FeedItem
                         key={feed.id}
