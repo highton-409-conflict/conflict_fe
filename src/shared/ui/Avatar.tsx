@@ -18,7 +18,7 @@ export const Avatar = ({ src, alt = "", children, className, imgClassName, ...re
     return (
         <div
             className={twMerge(
-                "shrink-0 rounded-full flex items-center justify-center overflow-hidden w-10 h-10 cursor-pointer",
+                "shrink-0 rounded-full flex items-center justify-center overflow-hidden w-8 h-8 cursor-pointer",
                 !hasImage && "bg-neutral-300",
                 className
             )}
