@@ -13,13 +13,13 @@ type Props = ComponentProps<"input"> & {
 
 const STATE_STYLE: Record<InputState, string> = {
     default: "border-neutral-300 focus-within:border-cyan-600",
-    error: "border-amber-500 focus-within:border-amber-500",
+    error: "border-red-500 focus-within:border-red-500",
     success: "border-green-500 focus-within:border-green-500",
 }
 
 const MESSAGE_STYLE: Record<InputState, string> = {
     default: "text-neutral-400",
-    error: "text-amber-500",
+    error: "text-red-500",
     success: "text-green-600",
 }
 
@@ -48,7 +48,7 @@ export const Input = ({
 
             <div
                 className={clsx(
-                    "flex items-center rounded-xl p-4 bg-white border transition-colors duration-200",
+                    "flex items-center rounded-xl p-4 bg-white border border-neutral-300 transition-colors duration-200",
                     STATE_STYLE[state]
                 )}
             >
@@ -86,7 +86,7 @@ export const Input = ({
                             <button
                                 type="button"
                                 onClick={() => setShowPassword((prev) => !prev)}
-                                className="ml-2 text-neutral-500"
+                                className="ml-2 text-neutral-400"
                                 tabIndex={-1}
                             >
                                 {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
