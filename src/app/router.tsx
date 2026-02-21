@@ -1,5 +1,3 @@
-
-import { LoginPage, SignupPage } from "@/pages"
 import { AuthGuard } from "@/shared/lib"
 import { LoginPage, SignupPage, FeedPage, SearchPage, WritePage } from "@/pages"
 import { createBrowserRouter } from "react-router"
