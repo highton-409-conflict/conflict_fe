@@ -22,6 +22,7 @@ export const AuthForm = ({ type }: IAuthProp) => {
             </div>
 
             <div className="flex flex-col gap-7">
+                {type === "signup" && <Input label="닉네임" placeholder="닉네임을 입력해주세요." />}
                 <Input label="아이디" placeholder="아이디를 입력해주세요." />
                 <Input label="비밀번호" placeholder="비밀번호를 입력해주세요." type="password" />
 
