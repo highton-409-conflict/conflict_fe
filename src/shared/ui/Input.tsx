@@ -13,13 +13,13 @@ type Props = ComponentProps<"input"> & {
 
 const STATE_STYLE: Record<InputState, string> = {
     default: "border-neutral-300 focus-within:border-cyan-600",
-    error: "border-rose-500 focus-within:border-rose-500",
+    error: "border-amber-500 focus-within:border-amber-500",
     success: "border-green-500 focus-within:border-green-500",
 }
 
 const MESSAGE_STYLE: Record<InputState, string> = {
     default: "text-neutral-400",
-    error: "text-rose-500",
+    error: "text-amber-500",
     success: "text-green-600",
 }
 
