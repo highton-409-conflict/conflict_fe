@@ -32,13 +32,14 @@ export const ApiFactory = {
 
     /**
      * @description DELETE API 메서드 생성
+     * @template T - 요청 바디 타입
      * @template R - 응답 데이터 타입
      * @param {string} url - 요청할 URL 경로
      * @returns DELETE 메서드
      */
-    delete: <R = unknown>(url: string) => {
-        return async (config?: AxiosRequestConfig) => {
-            return ApiHelper.delete<R>(url, config)
+    delete: <T = object, R = unknown>(url: string) => {
+        return async (body?: T, config?: AxiosRequestConfig) => {
+            return ApiHelper.delete<R>(url, body, config)
         }
     },
 

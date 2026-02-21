@@ -1,0 +1,150 @@
+"/posts": {
+  "get": {
+      "tags": [
+          "post-controller"
+      ],
+      "summary": "게시글 전체 조회",
+      "operationId": "getAllPosts",
+      "responses": {
+          "200": {
+              "description": "OK",
+              "content": {
+                  "application/json": {
+                      "schema": {
+                          "type": "array",
+                          "items": {
+                              "$ref": "#/components/schemas/PostRes"
+                          }
+                      }
+                  }
+              }
+          }
+      }
+  },
+  "post": {
+      "tags": [
+          "post-controller"
+      ],
+      "summary": "게시글 생성",
+      "operationId": "createPost",
+      "requestBody": {
+          "content": {
+              "application/json": {
+                  "schema": {
+                      "$ref": "#/components/schemas/CreatePostReq"
+                  }
+              }
+          },
+          "required": true
+      },
+      "responses": {
+          "200": {
+              "description": "OK",
+              "content": {
+                  "application/json": {
+                      "schema": {
+                          "$ref": "#/components/schemas/UpdatePostRes"
+                      }
+                  }
+              }
+          }
+      }
+  }
+},
+"/posts/{postId}/like": {
+  "post": {
+      "tags": [
+          "post-controller"
+      ],
+      "summary": "게시글 좋아요 토글",
+      "operationId": "togglePostLike",
+      "parameters": [
+          {
+              "name": "postId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                  "type": "string",
+                  "format": "uuid"
+              }
+          }
+      ],
+      "responses": {
+          "200": {
+              "description": "OK",
+              "content": {
+                  "application/json": {
+                      "schema": {
+                          "$ref": "#/components/schemas/TogglePostLikeRes"
+                      }
+                  }
+              }
+          }
+      }
+  }
+},
+
+"patch": {
+  "tags": [
+      "post-controller"
+  ],
+  "summary": "게시글 수정",
+  "operationId": "updatePost",
+  "parameters": [
+      {
+          "name": "postId",
+          "in": "path",
+          "required": true,
+          "schema": {
+              "type": "string",
+              "format": "uuid"
+          }
+      }
+  ],
+  "requestBody": {
+      "content": {
+          "application/json": {
+              "schema": {
+                  "$ref": "#/components/schemas/UpdatePostReq"
+              }
+          }
+      },
+      "required": true
+  },
+  "responses": {
+      "200": {
+          "description": "OK",
+          "content": {
+              "application/json": {
+                  "schema": {
+                      "$ref": "#/components/schemas/UpdatePostRes"
+                  }
+              }
+          }
+      }
+  }
+}
+
+"delete": {
+  "tags": [
+      "post-controller"
+  ],
+  "summary": "게시글 삭제",
+  "operationId": "removePostTag",
+  "parameters": [
+      {
+          "name": "postId",
+          "in": "path",
+          "required": true,
+          "schema": {
+              "type": "string",
+              "format": "uuid"
+          }
+      }
+  ],
+  "responses": {
+      "200": {
+          "description": "OK"
+      }
+  }
+},
