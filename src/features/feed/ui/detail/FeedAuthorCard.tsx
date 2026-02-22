@@ -1,6 +1,7 @@
 import { Button } from "@/shared/ui"
 import { useNavigate } from "react-router"
-import { useFollowMutation, useProfileQuery, useUserQuery } from "@entities/user"
+import { useFollowMutation, useProfileQuery, useUserQuery, useFollowingsQuery } from "@entities/user"
+import { useMemo } from "react"
 
 interface Props {
     author: string
@@ -12,7 +13,13 @@ export const FeedAuthorCard = ({
     const navigate = useNavigate()
     const { data: userData } = useUserQuery()
     const { data } = useProfileQuery(author)
+    const { data: followingsData } = useFollowingsQuery(userData?.account_id ?? "")
     const { mutate } = useFollowMutation()
+
+    const isFollowing = useMemo(() => {
+        if (!followingsData || !data) return false
+        return followingsData.users.some(u => u.account_id === data.account_id)
+    }, [followingsData, data])
 
     const handleFollow = (e: React.MouseEvent) => {
         e.stopPropagation()
@@ -43,7 +50,15 @@ export const FeedAuthorCard = ({
             <p className="text-sm text-neutral-600 mb-4">{data?.introduce}</p>
 
             {
-                userData?.account_id !== data?.account_id && <Button size="medium" onClick={handleFollow}>팔로우</Button>
+                userData?.account_id !== data?.account_id && (
+                    <Button 
+                        size="medium" 
+                        onClick={handleFollow}
+                        variant={isFollowing ? "white" : undefined}
+                    >
+                        {isFollowing ? "팔로잉" : "팔로우"}
+                    </Button>
+                )
             }
         </div>
     )
