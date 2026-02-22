@@ -1,4 +1,4 @@
-import { ProfileSection, IntroductionSection, PasswordSection, WithdrawalSection } from "@/features/mypage/ui"
+import { ProfileSection, IntroductionSection, WithdrawalSection } from "@/features/mypage/ui"
 import { useUserQuery, useUpdateProfileMutation } from "@/entities/user"
 
 /**
@@ -30,8 +30,6 @@ export function MyPage() {
             <IntroductionSection />
 
             <hr />
-
-            <PasswordSection />
             <WithdrawalSection />
         </div>
     )
