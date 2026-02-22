@@ -31,7 +31,7 @@ export const UserItem = ({ profileImg, username, userId, tags = [], follower, fo
                         <p className="text-neutral-400 text-lg">@{userId}</p>
                     </div>
 
-                    <p onClick={() => navigate("/follow")} className="text-neutral-400 text-lg whitespace-nowrap">
+                    <p onClick={() => navigate(`/follow/${userId}`)} className="text-neutral-400 text-lg whitespace-nowrap">
                         팔로워 {follower} &nbsp;&nbsp; 팔로잉 {following}
                     </p>
                 </div>
