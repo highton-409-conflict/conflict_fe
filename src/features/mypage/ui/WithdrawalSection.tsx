@@ -1,20 +1,20 @@
 import { useState } from "react"
 import { Button } from "@/shared/ui"
 import { ConfirmModal } from "./ConfirmModal"
+import { useDeleteMutation } from "@entities/auth"
 
 export const WithdrawalSection = () => {
     const [isOpen, setIsOpen] = useState(false)
+    const { mutate } = useDeleteMutation()
 
     const handleConfirm = () => {
-        console.log("회원 탈퇴 진행")
         setIsOpen(false)
-        // 탈퇴 API 호출
+        mutate()
     }
 
     return (
         <>
             <section className="flex items-center gap-4">
-                <span className="text-neutral-600">회원 탈퇴</span>
                 <Button variant="error" fullWidth={false} onClick={() => setIsOpen(true)}>
                     탈퇴하기
                 </Button>

@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router"
+
 export interface IUserProps {
     profileImg: string
     username: string
@@ -11,8 +13,13 @@ export interface IUserProps {
  * @description 유저 검색 아이템 컴포넌트
  */
 export const UserItem = ({ profileImg, username, userId, tags = [], follower, following }: IUserProps) => {
+    const navigate = useNavigate()
+
     return (
-        <div className="w-full max-w-195 flex gap-8 py-8 border-b border-neutral-200">
+        <div 
+            className="w-full max-w-195 flex gap-8 py-8 border-b border-neutral-200 cursor-pointer"
+            onClick={() => navigate(`/profile/${userId}`)}
+        >
             <div className="w-32 h-32 rounded-full overflow-hidden bg-neutral-200 shrink-0">
                 <img src={profileImg} alt={username} className="w-full h-full object-cover" />
             </div>

@@ -28,15 +28,7 @@ export const MarkdownPreview = ({ title, content, tags }: Props) => {
         >
             <h1>{title}</h1>
 
-            <FeedHeader />
-
-            <div className="flex gap-2 mb-4 not-prose">
-                {tags.map((tag, i) => (
-                    <span key={i} className="px-3 py-1 bg-cyan-500 text-white rounded-full text-sm">
-                        {tag}
-                    </span>
-                ))}
-            </div>
+            <FeedHeader tags={tags} />
 
             <ReactMarkdown remarkPlugins={[remarkBreaks]}>{content}</ReactMarkdown>
         </div>

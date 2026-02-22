@@ -2,9 +2,15 @@ import { Button, Input } from "@/shared/ui"
 import { Pencil } from "lucide-react"
 import { useRef, useState } from "react"
 
-export const ProfileSection = () => {
-    const [name, setName] = useState("유저이름")
-    const [userId, setUserId] = useState("User0000")
+interface ProfileSectionProps {
+    name?: string
+    userId?: string
+    onUpdateProfile: (data: { name?: string; introduce?: string; image?: string }) => void
+}
+
+export const ProfileSection = ({ name: initialName, userId: initialUserId, onUpdateProfile }: ProfileSectionProps) => {
+    const [name, setName] = useState(initialName || "")
+    const [userId, setUserId] = useState(initialUserId || "")
 
     const [isEditingName, setIsEditingName] = useState(false)
     const [isEditingId, setIsEditingId] = useState(false)
@@ -14,6 +20,7 @@ export const ProfileSection = () => {
 
     const handleSaveName = () => {
         setIsEditingName(false)
+        onUpdateProfile({ name })
     }
 
     const handleSaveId = () => {
@@ -48,7 +55,7 @@ export const ProfileSection = () => {
                         />
                     ) : (
                         <div className="flex items-center gap-2">
-                            <span className="text-title-medium">{name}</span>
+                            <span className="text-title-medium">{name || "이름 없음"}</span>
                             <button onClick={() => setIsEditingName(true)}>
                                 <Pencil size={18} className="text-cyan-500" />
                             </button>
@@ -70,7 +77,7 @@ export const ProfileSection = () => {
                         />
                     ) : (
                         <div className="flex items-center gap-2 text-neutral-400">
-                            <span className="text-title-small text-neutral-400">{userId}</span>
+                            <span className="text-title-small text-neutral-400">{userId || "ID 없음"}</span>
                             <button onClick={() => setIsEditingId(true)}>
                                 <Pencil size={18} className="text-cyan-500" />
                             </button>

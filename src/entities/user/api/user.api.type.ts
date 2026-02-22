@@ -11,10 +11,34 @@ export interface QueryProfileRes {
 }
 
 export interface AllUserItem {
-    id: string;
-    account_id: string;
-    name: string;
-    profile?: string;
+    id: string
+    account_id: string
+    name: string
+    profile?: string
+    follower_count: number
+    following_count: number
+    tags: {
+        id: string
+        name: string
+    }[]
+}
+
+/** 팔로워/팔로잉 목록 응답 타입 */
+export interface FollowUserItem {
+    id: string
+    account_id: string
+    name: string
+    profile?: string
+    follower_count: number
+    following_count: number
+    tags: {
+        id: string
+        name: string
+    }[]
+}
+
+export interface FollowListRes {
+    users: FollowUserItem[]
 }
 
 export interface QueryAllUserRes {

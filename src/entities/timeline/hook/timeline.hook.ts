@@ -1,6 +1,7 @@
 import { timelineApi } from "@/entities/timeline/api/timeline.api"
 import { createMutation } from "@/shared/api"
 import type { UpdateTimelineItemReq, TimelineItemRes } from "@/entities/timeline/api/timeline.api.type"
+import { queryClient } from "@/shared/query"
 
 /** 타임라인 아이템 생성 뮤테이션 */
 export const useCreateTimelineItemMutation = createMutation(timelineApi.createItem, {
@@ -11,6 +12,10 @@ export const useCreateTimelineItemMutation = createMutation(timelineApi.createIt
         401: "인증이 필요합니다",
         500: "서버 오류가 발생했습니다",
     },
+    onSuccessCallback: () => {
+        queryClient.invalidateQueries({ queryKey: ["user.profile"] })
+        queryClient.invalidateQueries({ queryKey: ["user.all"] })
+    }
 })
 
 const updateTimelineItemMutationFn = (params: {

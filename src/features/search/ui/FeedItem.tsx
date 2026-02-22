@@ -1,5 +1,6 @@
 import Avatar from "@/shared/ui/Avatar"
 import { Heart } from "lucide-react"
+import { useNavigate } from "react-router"
 
 type User = {
     src?: string
@@ -7,6 +8,7 @@ type User = {
 }
 
 export interface IFeedProps {
+    id: string
     image: string
     title: string
     content: string
@@ -19,9 +21,11 @@ export interface IFeedProps {
 /**
  * @description 피드 검색 아이템 컴포넌트
  */
-export const FeedItem = ({ image, title, content, date, user, likes, tags }: IFeedProps) => {
+export const FeedItem = ({ image, title, content, date, user, likes, tags, id }: IFeedProps) => {
+    const navigate = useNavigate();
+
     return (
-        <div className="w-195 bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md">
+        <div onClick={() => navigate(`/detail/${id}`)} className="w-195 bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md">
             <div className="flex items-center gap-3 px-6 py-4">
                 <Avatar src={user.src} className="w-10 h-10" />
                 <p className="font-medium text-neutral-900">{user.username}</p>
@@ -51,7 +55,7 @@ export const FeedItem = ({ image, title, content, date, user, likes, tags }: IFe
                     ))}
                 </div>
 
-                <p className="text-sm text-neutral-400">{date}</p>
+                <p className="text-sm text-neutral-400">{new Date(date).toLocaleString()}</p>
             </div>
         </div>
     )

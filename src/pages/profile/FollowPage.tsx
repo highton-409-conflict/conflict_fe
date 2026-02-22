@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { ChevronLeft } from "lucide-react"
 import { UserItem } from "@/features/profile/ui/UserItem"
+import { useFollowersQuery, useFollowingsQuery } from "@/entities/user"
 
 type Tab = "follower" | "following"
 
@@ -11,14 +12,12 @@ export const FollowPage = () => {
 
     const [activeTab, setActiveTab] = useState<Tab>("following")
 
-    const dummyUsers = Array.from({ length: 6 }).map((_, i) => ({
-        profileImg: "https://via.placeholder.com/150",
-        username: "유저이름",
-        userId: `USER00${i}`,
-        tags: ["아이돌", "코스메틱", "운동선수", "애니캐릭터"],
-        follower: 999,
-        following: 999,
-    }))
+    const { data: followersData } = useFollowersQuery(userId!)
+    const { data: followingsData } = useFollowingsQuery(userId!)
+
+    const users = activeTab === "follower" 
+        ? followersData?.users ?? [] 
+        : followingsData?.users ?? []
 
     return (
         <div className="max-w-4xl mx-auto px-6 py-10">
@@ -27,7 +26,7 @@ export const FollowPage = () => {
                     <ChevronLeft className="w-6 h-6" />
                 </button>
 
-                <h2 className="text-3xl font-bold">@{userId}의 팔로잉 목록</h2>
+                <h2 className="text-3xl font-bold">@{userId}의 {activeTab === "follower" ? "팔로워" : "팔로잉"} 목록</h2>
             </div>
 
             <div className="flex border-b border-neutral-300 mb-6">
@@ -53,15 +52,15 @@ export const FollowPage = () => {
             </div>
 
             <div>
-                {dummyUsers.map((user, i) => (
+                {users.map((user) => (
                     <UserItem
-                        key={i}
-                        profileImg={user.profileImg}
-                        username={user.username}
-                        userId={user.userId}
-                        tags={user.tags}
-                        follower={user.follower}
-                        following={user.following}
+                        key={user.id}
+                        profileImg={user.profile || ""}
+                        username={user.name}
+                        userId={user.account_id}
+                        tags={user.tags.map((tag) => tag.name)}
+                        follower={user.follower_count}
+                        following={user.following_count}
                     />
                 ))}
             </div>

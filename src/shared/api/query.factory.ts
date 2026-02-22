@@ -139,8 +139,7 @@ export const createSuspenseQuery = <T = unknown, R = unknown>(
  */
 export const createQueryOptions = <T = unknown, R = unknown>(
     queryKey: string,
-    queryFn: (params: T) => Promise<R>,
-    _options: QueryOptions = {}
+    queryFn: (params: T) => Promise<R>
 ): UseQueryOptions<R, Error> => {
     return {
         queryKey: [queryKey],

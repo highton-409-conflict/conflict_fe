@@ -1,12 +1,13 @@
 import { useEffect } from "react"
-import { collectionMock } from "../../model/collection.mock"
+import { useCollectionsQuery, useCreateCollectionMutation } from "@/entities/collection"
+import { useUploadImageMutation } from "@/entities/file"
 import { Button } from "@/shared/ui"
 import { CollectionImageItem } from "./CollectionImageItem"
 import { CollectionUploadItem } from "./CollectionUploadItem"
 
 type Props = {
     onClose: () => void
-    onSelect: (imageUrl: string) => void
+    onSelect: (collectionId: string) => void
 }
 
 export const CollectionSelectModal = ({ onClose, onSelect }: Props) => {
@@ -25,6 +26,17 @@ export const CollectionSelectModal = ({ onClose, onSelect }: Props) => {
         }
     }, [onClose])
 
+    const { data: collections, refetch } = useCollectionsQuery()
+    const uploadImageMutation = useUploadImageMutation()
+    const createCollectionMutation = useCreateCollectionMutation()
+
+    const handleUpload = async (file: File) => {
+        const uploadResult = await uploadImageMutation.mutateAsync(file)
+        await createCollectionMutation.mutateAsync({ image: uploadResult.url })
+        await refetch()
+        onClose()
+    }
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={onClose}>
             <div className="w-160 rounded-2xl bg-white p-6" onClick={(e) => e.stopPropagation()}>
@@ -34,18 +46,16 @@ export const CollectionSelectModal = ({ onClose, onSelect }: Props) => {
                 </div>
 
                 <div className="grid grid-cols-4 gap-4">
-                    {collectionMock.map((image) => (
+                    {collections?.map((collection) => (
                         <CollectionImageItem
-                            key={image.id}
-                            imageUrl={image.imageUrl}
-                            onClick={() => onSelect(image.imageUrl)}
+                            key={collection.id}
+                            imageUrl={collection.image || ""}
+                            onClick={() => onSelect(collection.id)}
                         />
                     ))}
 
                     <CollectionUploadItem
-                        onUpload={(file) => {
-                            console.log("업로드 파일", file)
-                        }}
+                        onUpload={handleUpload}
                     />
                 </div>
 

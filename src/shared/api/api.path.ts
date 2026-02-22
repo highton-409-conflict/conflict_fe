@@ -6,9 +6,12 @@ export const API_PATH = {
         WITHDRAW: "/auth/withdraw",
     },
     USER: {
-        MY: "/user",
+        MY: "/user/my",
+        USERS: "/user",
         PROFILE: "/user/profile",
         FOLLOW: (userId: string) => `/user/${userId}/follow`,
+        FOLLOWERS: "/user/followers",
+        FOLLOWINGS: "/user/followings",
         ALL: "/user/all",
     },
     TOPIC: {
@@ -33,7 +36,6 @@ export const API_PATH = {
         LIKE: (postId: string) => `/posts/${postId}/like`
     },
     NOTIFICATION: {
-        NOTIFICATIONS: "/notifications",
-        READ: (notificationId: string) => `/notifications/${notificationId}/read`,
+        NOTIFICATIONS: "/notification"
     },
 }

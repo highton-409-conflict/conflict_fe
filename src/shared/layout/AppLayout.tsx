@@ -6,7 +6,7 @@ export const AppLayout = () => {
 
     return (
         <div className="flex min-h-screen flex-col">
-            {!pathname.startsWith("/write") && <Header />}
+            {!pathname.startsWith("/write") && <Header isLogined />}
             <main className="flex-1 justify-center">
                 <Outlet />
             </main>

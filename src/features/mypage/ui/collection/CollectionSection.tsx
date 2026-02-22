@@ -1,9 +1,23 @@
 import { useState } from "react"
 import { CollectionSelectModal } from "./CollectionSelectModal"
+import { useUserQuery } from "@/entities/user"
+import { useSelectCollectionMutation } from "@/entities/collection"
 
 export const CollectionSection = () => {
     const [isOpen, setIsOpen] = useState(false)
-    const [selectedImage, setSelectedImage] = useState<string | null>(null)
+    const { data: user, refetch } = useUserQuery()
+    const selectCollectionMutation = useSelectCollectionMutation()
+
+    const handleSelectCollection = (collectionId: string) => {
+        selectCollectionMutation.mutate({
+            collection_id: collectionId
+        }, {
+            onSuccess: () => {
+                refetch()
+            }
+        })
+        setIsOpen(false)
+    }
 
     return (
         <section className="flex flex-col gap-4">
@@ -14,8 +28,8 @@ export const CollectionSection = () => {
                 onClick={() => setIsOpen(true)}
                 className="flex h-40 w-40 cursor-pointer items-center justify-center rounded-xl bg-neutral-300"
             >
-                {selectedImage ? (
-                    <img src={selectedImage} alt="collection" className="h-full w-full rounded-xl object-cover" />
+                {user?.collection_url ? (
+                    <img src={user.collection_url} alt="collection" className="h-full w-full rounded-xl object-cover" />
                 ) : (
                     <span className="text-4xl text-white">+</span>
                 )}
@@ -24,10 +38,7 @@ export const CollectionSection = () => {
             {isOpen && (
                 <CollectionSelectModal
                     onClose={() => setIsOpen(false)}
-                    onSelect={(image) => {
-                        setSelectedImage(image)
-                        setIsOpen(false)
-                    }}
+                    onSelect={handleSelectCollection}
                 />
             )}
         </section>

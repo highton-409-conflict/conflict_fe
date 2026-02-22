@@ -5,7 +5,6 @@ export interface NotificationItem {
     body: string
     type: "COLLECTION" | "TOPIC" | "FOLLOWER"
     link: string
-    is_read: boolean
     created_at: string
 }
 

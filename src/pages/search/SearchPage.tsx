@@ -1,47 +1,80 @@
 import { useMemo, useState } from "react"
 import { SearchPanel } from "@/features/search/ui"
 import { Search } from "lucide-react"
+import { usePostsQuery } from "@/entities/post"
+import { useAllUsersQuery } from "@/entities/user"
+
+const FIRST_IMAGE_REGEX: RegExp = /!\[.*?\]\((.*?)\)/;
+
+/**
+ * 마크다운 텍스트에서 첫 번째 이미지 URL만 추출
+ * @param markdown 대상 문자열
+ * @returns 추출된 URL 또는 null
+ */
+const extractFirstImageSrc = (markdown: string): string | null => {
+  const match = markdown.match(FIRST_IMAGE_REGEX);
+  return match ? match[1] : null;
+};
 
 export const SearchPage = () => {
     const [keyword, setKeyword] = useState("")
-
-    const feeds = Array.from({ length: 30 }, (_, i) => ({
-        id: i + 1,
-        image: `https://picsum.photos/800/${600 + i}`,
-        title: `덕질 기록 ${i + 1}`,
-        content: `덕질 후기 내용입니다... (${i + 1})`,
-        date: `2026.02.${(i % 28) + 1}`,
-        likes: Math.floor(Math.random() * 1000),
-        user: {
-            username: `유저${i + 1}`,
-            src: `https://picsum.photos/100?random=${i}`,
-        },
-        tags: ["아이돌", "애니", "게임"].slice(0, (i % 3) + 1),
-    }))
-
-    const users = Array.from({ length: 30 }, (_, i) => ({
-        id: i + 1,
-        profileImg: `https://picsum.photos/200?random=${i}`,
-        username: `유저${i + 1}`,
-        userId: `user_${i + 1}`,
-        tags: ["아이돌", "코스메틱", "프론트엔드"].slice(0, (i % 3) + 1),
-        follower: Math.floor(Math.random() * 1000),
-        following: Math.floor(Math.random() * 500),
-    }))
+    const { data: posts } = usePostsQuery()
+    const { data: allUsers } = useAllUsersQuery()
 
     const filteredFeeds = useMemo(() => {
-        if (!keyword.trim()) return feeds
-        return feeds.filter((feed) => feed.title.toLowerCase().includes(keyword.toLowerCase()))
-    }, [keyword, feeds])
+        if (!posts) return []
+        if (!keyword.trim()) return posts.map((post, i) => ({
+            id: post.id,
+            image: extractFirstImageSrc(post.content) ?? `https://picsum.photos/20${i % 10}`,
+            title: post.title,
+            content: post.content,
+            date: post.created_at,
+            user: { username: post.author_id, src: extractFirstImageSrc(post.content) ?? `https://picsum.photos/20${i % 10}` },
+            likes: 0,
+            tags: [],
+        }))
+        return posts
+            .filter((post) => 
+                post.title.toLowerCase().includes(keyword.toLowerCase()) ||
+                post.content.toLowerCase().includes(keyword.toLowerCase())
+            )
+            .map((post, i) => ({
+                id: post.id,
+                image: extractFirstImageSrc(post.content) ?? `https://picsum.photos/20${i % 10}`,
+                title: post.title,
+                content: post.content,
+                date: post.created_at,
+                user: { username: post.author_id, src: extractFirstImageSrc(post.content) ?? `https://picsum.photos/20${i % 10}` },
+                likes: 0,
+                tags: [],
+            }))
+    }, [keyword, posts])
 
     const filteredUsers = useMemo(() => {
-        if (!keyword.trim()) return users
-        return users.filter(
-            (user) =>
-                user.username.toLowerCase().includes(keyword.toLowerCase()) ||
-                user.userId.toLowerCase().includes(keyword.toLowerCase())
-        )
-    }, [keyword, users])
+        if (!allUsers) return []
+        if (!keyword.trim()) return allUsers.users.map((user, i) => ({
+            profileImg: user.profile || `https://picsum.photos/20${i % 10}`,
+            username: user.name,
+            userId: user.account_id,
+            tags: user.tags.map((tag) => tag.name),
+            follower: user.follower_count,
+            following: user.following_count,
+        }))
+        return allUsers.users
+            .filter(
+                (user) =>
+                    user.name.toLowerCase().includes(keyword.toLowerCase()) ||
+                    user.account_id.toLowerCase().includes(keyword.toLowerCase())
+            )
+            .map((user, i) => ({
+                profileImg: user.profile || `https://picsum.photos/20${i % 10}`,
+                username: user.name,
+                userId: user.account_id,
+                tags: user.tags.map((tag) => tag.name),
+                follower: user.follower_count,
+                following: user.following_count,
+            }))
+    }, [keyword, allUsers])
 
     return (
         <div className="w-full max-w-195 mx-auto py-12 px-4">

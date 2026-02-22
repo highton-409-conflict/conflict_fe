@@ -4,6 +4,11 @@ export interface CreatePostReq {
     content: string
 }
 
+export interface Tag {
+    tag_id: string
+    tag_name: string
+}
+
 /** 포스트 응답 타입 */
 export interface PostRes {
     id: string
@@ -11,6 +16,9 @@ export interface PostRes {
     content: string
     author_id: string
     created_at: string
+    likes: number
+    is_liked: boolean
+    tags: Tag[]
 }
 
 /** 포스트 수정 요청 타입 */
